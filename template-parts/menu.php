@@ -6,5 +6,4 @@
   <li><a href="createShoppingList.php"> Create List </a></li>
   <li><a href="editShoppingList.php"> Edit List </a></li>
   <li><a href="viewShoppingList.php"> View List </a></li>
-  <li>(Simple CRUD in PHP)</li>
 </ul>

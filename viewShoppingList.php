@@ -59,12 +59,15 @@
 			echo $row->name;
 		?>
 		</label>
+		<form action="" method="post">
+			<input type="submit" value="Submit">
 		<table class="table table-bordered">
               <thead>
                 <tr>
                   <th width="60px">Item_ID</th>
                   <th>Status</th>
                   <th>Urgency</th>
+                  <th>Quantity</th>
                   <th>Item</th>
 				  <th>Price</th>
 				  <th>Supplier 1</th>
@@ -92,9 +95,16 @@
 				   			<?php } ?>   
 			       			
 			       		<tr>
-				       		<td><?php echo $listArray['idItem'] ?></td>
-				       		<td><?php echo $listArray['status'] ?></td>
+				       		<td><input type="checkbox" name="item" value="<?php echo $listArray['idItem'] ?>"></td>
+				       		<td>
+					       		<select name="status" class="input-small"> <!--Supplement an id here instead of using 'text'-->
+					   				<option value="purchase" selected>purchase</option> 
+					   				<option value="deferred" >deferred</option>
+					   				<option value="fulfilled">fulfilled</option>
+					  			</select><?php echo $listArray['status'] ?>
+					  		</td>
 				       		<td><?php echo $listArray['urgency'] ?></td>
+				       		<td><input type="text" name="quantity" class="input-mini" value="<?php echo $listArray['quantity'] ?>"</td>
 				       		<td><?php echo $listArray['item'] ?></td>
 				       		<td><?php echo $listArray['supplier'] ?></td>
 				       		<td><?php echo $listArray['price'] ?></td>
@@ -114,6 +124,7 @@
 		          ?>
               </tbody>
 		</table>
+		</form>
 		<?php } ?>
 	</div>	
 </div>

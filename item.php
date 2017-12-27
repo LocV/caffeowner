@@ -2,24 +2,34 @@
 <div class="container home">
 		<h3>Inventoried Items </h3>
 		<?php include "connection.php" /** calling of connection.php that has the connection code **/ ?>
+		<form action="" method="POST">
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Item_ID</th>
+                  <th width="60px">Item_ID<br></th>
                   <th>Item</th>
                   <th>Description</th>
-				  <th>Category</th>
-				  <th>Brand</th>
-				  <th>Price</th>
-				  <th>Supplier</th>
+				  <th>Par</th>
+				  <th>Department
+					  <select name="text" class="input-small"> <!--Supplement an id here instead of using 'text'-->
+					  	<option value="BOH" selected>BOH</option> 
+					  	<option value="FOH" >FOH</option>
+					  </select>
+				  </th>
+				  <th>Category
+					  <select name="text" class="input-small"> <!--Supplement an id here instead of using 'text'-->
+					  	<option value="baking" selected>baking</option> 
+					  	<option value="produce" >produce</option>
+					  </select>
+				  </th>
+				  <th>frequency</th>
                 </tr>
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("SELECT Item.idItem, item, description, category, brand, price, supplier
-					FROM Item 
-					JOIN Product ON Item.`idItem` = Product.`idItem`
-					JOIN Supplier On Product.`idSupplier` = Supplier.`idSupplier`");
+				$result = $mysqli->query("SELECT Item.idItem, item, description, par, department, category, frequency
+					FROM Item
+					WHERE department='BOH' or department='FOH' or department='ALL'");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
@@ -27,10 +37,10 @@
                   <td><?php echo $data->idItem ?></td>
                   <td><?php echo $data->item ?></td>
 				  <td><?php echo $data->description ?></td>
+				  <td><?php echo $data->par ?></td>
+				  <td><?php echo $data->department ?></td>
 				  <td><?php echo $data->category ?></td>
-				  <td><?php echo $data->brand ?></td>
-				  <td><?php echo $data->price ?></td>
-				  <td><?php echo $data->supplier ?></td>
+				  <td><?php echo $data->frequency ?></td>
                 </tr>
 			  <?php
 				endwhile;
@@ -38,6 +48,7 @@
 			  ?>
               </tbody>
 		</table>
+		</form>
 	</div>	
 </div>
 </body>

@@ -6,16 +6,39 @@
 			
 			$itemId=$_GET['itemId'];
 			$shoppingListId=$_GET['shoppingListId'];
-			echo "<div class='alert alert-info'> URL Values listId= '$shoppingListId'  URL Values itemId= '$itemId' </div>";
 			
 			if ($itemId >= 1)
 			{
-				if($result = $mysqli->query("INSERT INTO ShoppingList_Item(idShoppingList, idItem) 
-					VALUES('$shoppingListId','$itemId')") != true)
+				// make sure this item does not already exist
+				$itemCheck = $mysqli->query("Select * from  ShoppingList_Item
+					where idShoppingList = '$shoppingListId'
+					and idItem = '$itemId'");
+				if ($itemCheck->num_rows == 0)
 				{
-					die(mysql_error()); /*** execute the insert sql code **/
-				} else {
-					echo "<div class='alert alert-info'>Item successfully added to shopping list </div>"; /** success message **/
+					// insert newe item
+					if($result = $mysqli->query("INSERT INTO ShoppingList_Item(idShoppingList, idItem) 
+						VALUES('$shoppingListId','$itemId')") != true)
+					{
+						die(mysql_error()); /*** execute the insert sql code **/
+					} else {
+						echo "<div class='alert alert-info'>Item successfully added to shopping list </div>"; /** success message **/
+					}
+				}
+				else
+				{
+					// item already exists in list.
+					$data = $itemCheck->fetch_object();
+					
+					if($result = $mysqli->query("UPDATE ShoppingList_Item 
+												 SET quantity = quantity + 1
+												 Where id = '$data->id' ") != true)
+					{
+						die(mysql_error()); /*** execute the insert sql code **/
+					} 
+					else 
+					{
+						echo "<div class='alert alert-info'>Item successfully added to shopping list </div>"; /** success message **/
+					}
 				}
 			}
 		 if ($shoppingListId == ''){
@@ -55,12 +78,13 @@
                   <th width="60px">Item</th>
                   <th>Description</th>
                   <th>Par</th>
+                  <th>Dept.</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("select idItem, item, description, par from Item");
+				$result = $mysqli->query("select idItem, item, description, par, department, category from Item");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
@@ -68,6 +92,7 @@
                   <td><?php echo $data->item ?></td>
                   <td><?php echo $data->description ?></td>
                   <td><?php echo $data->par ?></td>
+                  <td><?php echo $data->department ?></td>
                   <td><a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&itemId=<?php echo $data->idItem ?>">Add</a></td>
                 </tr>
 			  <?php
