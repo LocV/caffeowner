@@ -1,6 +1,6 @@
 <?php include 'template-parts/header.php' /** calling of header(to make it uniform in all template file) **/?>	
 <div class="container home">
-		<h3> Read all the student profile </h3>
+		<h3> Update Inventory Items </h3>
 		<?php include "connection.php" /** calling of connection.php that has the connection code **/ ?>
 		<table class="table table-bordered">
               <thead>

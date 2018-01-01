@@ -35,7 +35,7 @@
 			  ?>
                 <tr>
                   <td><?php echo $data->idItem ?></td>
-                  <td><?php echo $data->item ?></td>
+                  <td><a href="item.php?idItem=<?php echo $data->idItem ?>"><?php echo $data->item ?></a></td>
 				  <td><?php echo $data->description ?></td>
 				  <td><?php echo $data->par ?></td>
 				  <td><?php echo $data->department ?></td>

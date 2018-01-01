@@ -14,16 +14,17 @@
 				$description = $_POST['pdescription'];
 				$dept = $_POST['dept'];
 				$category = $_POST['category'];
+				$par = $_POST['par'];
 				$supplier = $_POST['supplier'];
 				$price = $_POST['price'];
 				$brand = $_BRAND['brand'];
 				$price = $_POST['price'];
 				
-				echo "<div class='alert alert-info'> executing querry: INSERT INTO Item(name,description,category,department) 
-							VALUES('$item','$description','$category','$dept')  </div>";
+				echo "<div class='alert alert-info'> executing query: INSERT INTO Item(item, description, category, department, par) 
+							VALUES('$item','$description','$category','$dept', '$par')  </div>";
 				
-				if ($mysqli->query("INSERT INTO Item(name,description,category,department) 
-					VALUES('$item','$description','$category','$dept')") != TRUE)
+				if ($mysqli->query("INSERT INTO Item(item, description, category, department, par) 
+					VALUES('$item','$description','$category','$dept', '$par')") != TRUE)
 				{
 					die(mysql_error()); /*** execute the insert sql code **/
 				} else {
@@ -45,18 +46,24 @@
 			<label> Inventory Item: </label>
 				<input type="text" placeholder="Name" class="input-large" name="item" />
 				<select class="span2" name="dept">
-					<option value="FOH">BOH</option>
-					<option value="BOH">FOH</option>
+					<option value="BOH">BOH</option>
+					<option value="FOH">FOH</option>
 					<option value="ALL">ALL</option>
+				</select>
+				<select name="category" class="input-small"> <!--Supplement an id here instead of using 'text'-->
+					   				<option value="baking" selected>baking</option> 
+					   				<option value="produce" >produce</option>
+					   				<option value="dairy">dairy</option>
+					   				<option value="coffee">coffee</option>
+					   				<option value="supplies">suplies</option>
 				</select>
 				<br>
 				<input type="text" placeholder="Description" class="input-xxlarge" name="pdescription" />
 				<br>
-				<input type="text" placeholder="Category" class="input-medium" name="category" />
-					<i>Example: baking, produce, dairy, cheese, coffee, supplies</i>
+				<input type="text" placeholder="Par amount" class="input-large" name="par" />
 			<br>
 			<br>
-			<label> Product: </label>
+			<label> Product: (optional)</label>
 				<input type="text" placeholder="Product Brand" class="input-large" name="brand" />
 				<input type="text" placeholder="0.00" class="input-small" name="price" />
 				<br>
@@ -64,7 +71,7 @@
 				<br>
 				<br>
 			
-			<input type="submit" name="addProduct" value="Add Product" class="btn btn-info" />	
+			<input type="submit" name="addProduct" value="Add Item" class="btn btn-info" />	
 			
 		</form>		
 	</div>	

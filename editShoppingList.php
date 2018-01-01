@@ -50,11 +50,12 @@
 						    <th width="60px">Date</th>
 							<th>Name</th>
 							<th>Description</th>
+							<th>Status</th>
                 		  </tr>
               			</thead>
 			  		   <tbody>
 				  		<?php 
-					  		$result = $mysqli->query("SELECT id, dateCreated, name, description FROM ShoppingList");
+					  		$result = $mysqli->query("SELECT id, dateCreated, name, description, status FROM ShoppingList");
 				
 							while($data = $result->fetch_object() ):
 			  			?>
@@ -62,6 +63,7 @@
 			  			  	<td><?php echo $data->dateCreated ?></td>
 			  			  	<td><a href="editShoppingList.php?shoppingListId=<?php echo $data->id ?>"><?php echo $data->name ?></a></td>
 			  			  	<td><?php echo $data->description ?></td>
+			  			  	<td><?php echo $data->status ?></td>
                 		  </tr>
 						<?php	
 							endwhile;

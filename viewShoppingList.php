@@ -38,14 +38,29 @@
 			
 		<?php
 			} else {
-		
-				$result = $mysqli->query("SELECT ShoppingList_Item.`idItem`, status, urgency, Item.`item`, ShoppingList_Item.`quantity`, Supplier.`supplier`, Product.`price`
-											FROM `Item`, `ShoppingList_Item`, `Supplier`, `Product`
+				
+				$itemAction=$_GET['itemAction'];
+				$ShopListId=$_GET['ShopListId'];
+			
+				if ($ShopListId != '') // Mark item as fulfilled
+				{
+					if ($update = $mysqli->query("UPDATE ShoppingList_Item 
+						SET status = 'fulfilled'
+						WHERE id = '$ShopListId'") == true )
+						{
+							echo "<div class='alert alert-info'>Shopping List updated </div>"; /** success message **/
+						} 
+						else 
+						{
+							die(mysql_error()); /*** execute the insert sql code **/
+						}
+				}
+				 		
+				$result = $mysqli->query("SELECT ShoppingList_Item.`id`, status, urgency, Item.`item`, ShoppingList_Item.`quantity`
+											FROM `Item`, `ShoppingList_Item`
 											WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
 											AND Item.`idItem` = ShoppingList_Item.`idItem`
-											AND Product.`idItem` = Item.`idItem`
-											AND Product.`idSupplier` = Supplier.`idSupplier`
-											order by Item.`item`, Product.`price`");				
+											order by status ASC, Item.`item`");				
 			  ?>
                 
 			  
@@ -60,7 +75,8 @@
 		?>
 		</label>
 		<form action="" method="post">
-			<input type="submit" value="Submit">
+			<input type="submit" value="Update" class="btn btn-info">
+			<br><br>
 		<table class="table table-bordered">
               <thead>
                 <tr>
@@ -70,58 +86,36 @@
                   <th>Quantity</th>
                   <th>Item</th>
 				  <th>Price</th>
-				  <th>Supplier 1</th>
-				  <th>Price</th>
-				  <th>Supplier 2</th>
+				  <th>Supplier</th>
                 </tr>
               </thead>
               <tbody>
 	              <?php
-		              $previousItemId = null;
-		              $tableClosed= true;
-		              
 		              while($listArray = $result->fetch_assoc())
 		              {
-				   ?>
-			       				
-				   	<?php 
-			       		if ($previousItemId != $listArray['idItem'])
-				       		{
-				       		if (!$tableClosed){
 			       		?>
-			       				<td></td>
-			       				<td></td>
-				   			   </tr>
-				   			<?php } ?>   
-			       			
+			       					       			
 			       		<tr>
-				       		<td><input type="checkbox" name="item" value="<?php echo $listArray['idItem'] ?>"></td>
-				       		<td>
-					       		<select name="status" class="input-small"> <!--Supplement an id here instead of using 'text'-->
-					   				<option value="purchase" selected>purchase</option> 
-					   				<option value="deferred" >deferred</option>
-					   				<option value="fulfilled">fulfilled</option>
-					  			</select><?php echo $listArray['status'] ?>
+				       		<td><a href="viewShoppingList.php?itemAction=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>">Purchase</td>
+				       		<td>					  			
+					       		</select><?php echo $listArray['status'] ?>
 					  		</td>
 				       		<td><?php echo $listArray['urgency'] ?></td>
 				       		<td><input type="text" name="quantity" class="input-mini" value="<?php echo $listArray['quantity'] ?>"</td>
-				       		<td><?php echo $listArray['item'] ?></td>
-				       		<td><?php echo $listArray['supplier'] ?></td>
-				       		<td><?php echo $listArray['price'] ?></td>
-			       		<?php
-				       		$tableClosed = false;
-				       		}else {
-					    ?>
-					       		<td><?php echo $listArray['supplier'] ?></td>
-						   		<td><?php echo $listArray['price'] ?></td>
-			       			  </tr>
-						<?php
-								$tableClosed = true;
-				       		}
-	
-					  $previousItemId = $listArray['idItem'];
+				       		<td><a href="itemDetail.php?idItem=<?php echo $listArray['idItem'] ?>"><?php echo $listArray['item'] ?></td>
+				       		<?php 
+					       		$products = $mysqli->query("SELECT price, supplier 
+					       			FROM `Product`, `Supplier` 
+						   			WHERE idItem = '$listArray[idItem]'
+						   			AND `product`.`idSupplier`= `Supplier`.`idSupplier`");
+						   			
+						   			$data = $products->fetch_object()				
+					       	?>
+				       		<td><?php echo $data->supplier ?></td>
+				       		<td><?php echo $data->price ?></td>
+			     <?php		
 		              }
-		          ?>
+		           ?>
               </tbody>
 		</table>
 		</form>
