@@ -17,11 +17,13 @@
 						    <th width="60px">Date</th>
 							<th>Name</th>
 							<th>Description</th>
+							<th>Status</th>
                 		  </tr>
               			</thead>
 			  		   <tbody>
 				  		<?php 
-					  		$result = $mysqli->query("SELECT id, dateCreated, name, description FROM ShoppingList");
+					  		$result = $mysqli->query("SELECT id, dateCreated, name, description, status FROM ShoppingList
+					  								  ORDER BY dateCreated DESC");
 				
 							while($data = $result->fetch_object() ):
 			  			?>
@@ -29,6 +31,7 @@
 			  			  	<td><?php echo $data->dateCreated ?></td>
 			  			  	<td><a href="viewShoppingList.php?shoppingListId=<?php echo $data->id ?>"><?php echo $data->name ?></a></td>
 			  			  	<td><?php echo $data->description ?></td>
+			  			  	<td><?php echo $data->status ?></td>
                 		  </tr>
 						<?php	
 							endwhile;
@@ -56,7 +59,7 @@
 						}
 				}
 				 		
-				$result = $mysqli->query("SELECT ShoppingList_Item.`id`, status, urgency, Item.`item`, ShoppingList_Item.`quantity`
+				$result = $mysqli->query("SELECT ShoppingList_Item.`id`, Item.idItem, status, urgency, Item.`item`, ShoppingList_Item.`quantity`
 											FROM `Item`, `ShoppingList_Item`
 											WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
 											AND Item.`idItem` = ShoppingList_Item.`idItem`
@@ -74,15 +77,12 @@
 			echo $row->name;
 		?>
 		</label>
-		<form action="" method="post">
-			<input type="submit" value="Update" class="btn btn-info">
 			<br><br>
 		<table class="table table-bordered">
               <thead>
                 <tr>
                   <th width="60px">Item_ID</th>
                   <th>Status</th>
-                  <th>Urgency</th>
                   <th>Quantity</th>
                   <th>Item</th>
 				  <th>Price</th>
@@ -93,14 +93,22 @@
 	              <?php
 		              while($listArray = $result->fetch_assoc())
 		              {
+			       		if ($listArray['status'] == 'fulfilled')
+			       		{
+				       	?>
+				       		<tr bgcolor="#eee">
+					    <?php
+			       		}else{
+				       	?>
+				       		<tr>
+					    <?php
+			       		}
 			       		?>
 			       					       			
-			       		<tr>
-				       		<td><a href="viewShoppingList.php?itemAction=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>">Purchase</td>
+				       		<td><a href="viewShoppingList.php?itemAction=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Purchase </button></td>
 				       		<td>					  			
 					       		</select><?php echo $listArray['status'] ?>
 					  		</td>
-				       		<td><?php echo $listArray['urgency'] ?></td>
 				       		<td><input type="text" name="quantity" class="input-mini" value="<?php echo $listArray['quantity'] ?>"</td>
 				       		<td><a href="itemDetail.php?idItem=<?php echo $listArray['idItem'] ?>"><?php echo $listArray['item'] ?></td>
 				       		<?php 
@@ -118,7 +126,6 @@
 		           ?>
               </tbody>
 		</table>
-		</form>
 		<?php } ?>
 	</div>	
 </div>

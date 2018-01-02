@@ -55,7 +55,8 @@
               			</thead>
 			  		   <tbody>
 				  		<?php 
-					  		$result = $mysqli->query("SELECT id, dateCreated, name, description, status FROM ShoppingList");
+					  		$result = $mysqli->query("SELECT id, dateCreated, name, description, status FROM ShoppingList
+					  								  ORDER BY dateCreated DESC");
 				
 							while($data = $result->fetch_object() ):
 			  			?>
@@ -69,7 +70,7 @@
 							endwhile;
 				
 			  			?>
-		</table>
+			  		</table>
 		<?php } else { ?>
 		
 		<div style="overflow-y: scroll; height:300px;">
