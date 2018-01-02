@@ -44,11 +44,12 @@
 				
 				$itemAction=$_GET['itemAction'];
 				$ShopListId=$_GET['ShopListId'];
+				$itemStatus=$_GET['itemStatus'];
 			
-				if ($ShopListId != '') // Mark item as fulfilled
+				if ($ShopListId != '') // Mark item as fulfilled or deferred
 				{
 					if ($update = $mysqli->query("UPDATE ShoppingList_Item 
-						SET status = 'fulfilled'
+						SET status = '$itemStatus'
 						WHERE id = '$ShopListId'") == true )
 						{
 							echo "<div class='alert alert-info'>Shopping List updated </div>"; /** success message **/
@@ -81,10 +82,10 @@
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Item_ID</th>
+                  <th width="50px">Item_ID</th>
                   <th>Status</th>
-                  <th>Quantity</th>
                   <th>Item</th>
+                  <th>Quantity</th>
 				  <th>Price</th>
 				  <th>Supplier</th>
                 </tr>
@@ -98,18 +99,22 @@
 				       	?>
 				       		<tr bgcolor="#eee">
 					    <?php
-			       		}else{
+			       		}else if ($listArray['status'] == 'defer')
+			       		{
 				       	?>
+				       		<tr bgcolor="#fbfdea">
+					    <?php
+						} else {
+						?>
 				       		<tr>
 					    <?php
 			       		}
 			       		?>
 			       					       			
-				       		<td><a href="viewShoppingList.php?itemAction=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Purchase </button></td>
+				       		<td><a href="viewShoppingList.php?itemStatus=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Purchase </button></td>
 				       		<td>					  			
-					       		</select><?php echo $listArray['status'] ?>
+					       		<a href="viewShoppingList.php?itemStatus=defer&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
 					  		</td>
-				       		<td><input type="text" name="quantity" class="input-mini" value="<?php echo $listArray['quantity'] ?>"</td>
 				       		<td><a href="itemDetail.php?idItem=<?php echo $listArray['idItem'] ?>"><?php echo $listArray['item'] ?></td>
 				       		<?php 
 					       		$products = $mysqli->query("SELECT price, supplier 
@@ -119,6 +124,7 @@
 						   			
 						   			$data = $products->fetch_object()				
 					       	?>
+					       	<td><input type="text" name="quantity" class="input-mini" value="<?php echo $listArray['quantity'] ?>"</td>
 				       		<td><?php echo $data->supplier ?></td>
 				       		<td><?php echo $data->price ?></td>
 			     <?php		

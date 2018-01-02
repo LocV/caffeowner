@@ -7,7 +7,6 @@
 		    
 		
 		?>
-		<form action="" method="POST">
 		<p>Inventory Items</p>
 		<table class="table table-bordered">
               <thead>
@@ -82,7 +81,6 @@
 			  ?>
               </tbody>
 		</table>
-		</form>
 	</div>	
 </div>
 </body>
