@@ -17,15 +17,30 @@
 				$par = $_POST['par'];
 				$supplier = $_POST['supplier'];
 				$price = $_POST['price'];
-				$brand = $_BRAND['brand'];
+				$quantity = $_POST['quantity'];
+				$unit = $_POST['unit'];
+				$brand = $_POST['brand'];
 				$price = $_POST['price'];
 				
 				echo "<div class='alert alert-info'> executing query: INSERT INTO Item(item, description, category, department, par) 
 							VALUES('$item','$description','$category','$dept', '$par')  </div>";
 				
+				// INSERT INTO ITEM
 				if ($mysqli->query("INSERT INTO Item(item, description, category, department, par) 
 					VALUES('$item','$description','$category','$dept', '$par')") != TRUE)
 				{
+					die(mysql_error()); /*** execute the insert sql code **/
+				} else {
+					$newIdItem = $mysqli->insert_id;
+					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
+				}
+				
+				// INSERT INTO PRODUCT
+				if ($mysqli->query("INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$brand', '$price', '$quantity','$unit','$supplier','$newIdItem')") != TRUE)
+				{
+					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$brand','$quantity','$unit','$supplier','$newIdItem')</div>";
 					die(mysql_error()); /*** execute the insert sql code **/
 				} else {
 					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
@@ -55,7 +70,7 @@
 					   				<option value="produce" >produce</option>
 					   				<option value="dairy">dairy</option>
 					   				<option value="coffee">coffee</option>
-					   				<option value="supplies">suplies</option>
+					   				<option value="supplies">supplies</option>
 				</select>
 				<br>
 				<input type="text" placeholder="Description" class="input-xxlarge" name="pdescription" />
@@ -66,8 +81,19 @@
 			<label> Product: (optional)</label>
 				<input type="text" placeholder="Product Brand" class="input-large" name="brand" />
 				<input type="text" placeholder="0.00" class="input-small" name="price" />
+				<input type="text" placeholder="quantity" class="input-small" name="quantity" />
+				<input type="text" placeholder="unit" class="input-small" name="unit" />
 				<br>
-				<input type="text" placeholder="Product Supplier" class="input-large" name="sname" />
+				Primary Supplier:
+				<select name="supplier" class="input-medium"> <!--Supplement an id here instead of using 'text'-->
+				<?php 
+				$result = $mysqli->query("SELECT idSupplier, supplier from supplier");
+				
+				while($data = $result->fetch_object()) {
+			  	?>
+					   				<option value="<?php echo $data->idSupplier ?>" ><?php echo $data->supplier ?></option> 
+				<?php } ?>
+				</select>
 				<br>
 				<br>
 			

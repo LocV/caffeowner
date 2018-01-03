@@ -6,6 +6,8 @@
 			
 			$itemId=$_GET['itemId'];
 			$shoppingListId=$_GET['shoppingListId'];
+			$filterType=$_GET['filter'];
+			if ($filterType == '') $filterType='item';
 			
 			if ($itemId >= 1)
 			{
@@ -75,28 +77,33 @@
 		
 		<div style="overflow-y: scroll; height:300px;">
 		<label>Inventory Items</label>
+		<label>Filter by:</label>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&filter=department"><button class="btn btn-info"> Department </button></a>  
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&filter=category"><button class="btn btn-info"> Category </button></a>
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Item</th>
-                  <th>Description</th>
+                  <th width="60px">Add</th>
+	              <th>Item</th>
                   <th>Par</th>
+                  <th>Category</th>
                   <th>Dept.</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("select idItem, item, description, par, department, category from Item");
+				$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
+									      FROM Item
+										  ORDER BY $filterType");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
-                  <td><?php echo $data->item ?></td>
-                  <td><?php echo $data->description ?></td>
-                  <td><?php echo $data->par ?></td>
-                  <td><?php echo $data->department ?></td>
                   <td><a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&itemId=<?php echo $data->idItem ?>">Add</a></td>
+                  <td><?php echo $data->item ?></td>
+                  <td><?php echo $data->par ?></td>
+                  <td><?php echo $data->category ?></td>
+                  <td><?php echo $data->department ?></td>
                 </tr>
 			  <?php
 				endwhile;
@@ -110,7 +117,6 @@
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Fulfilled</th>
                   <th>Item</th>
                   <th>Quantity</th>
 				  <th>Urgency</th>
@@ -118,7 +124,7 @@
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("SELECT Item.item, quantity, fulfilled, urgency
+				$result = $mysqli->query("SELECT Item.item, quantity, urgency
 											FROM `Item`, `ShoppingList_Item`
 											WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
 											AND Item.`idItem` = ShoppingList_Item.`idItem`");
@@ -126,7 +132,6 @@
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
-                  <td><?php echo $data->fulfilled ?></td>
                   <td><?php echo $data->item ?></td>
                   <td><?php echo $data->quantity ?></td>
 				  <td><?php echo $data->urgency ?></td>
