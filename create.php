@@ -66,11 +66,12 @@
 					<option value="ALL">ALL</option>
 				</select>
 				<select name="category" class="input-small"> <!--Supplement an id here instead of using 'text'-->
-					   				<option value="baking" selected>baking</option> 
-					   				<option value="produce" >produce</option>
-					   				<option value="dairy">dairy</option>
-					   				<option value="coffee">coffee</option>
-					   				<option value="supplies">supplies</option>
+					 <option value="baking" selected>baking</option> 
+					 <option value="baking" selected>cheese</option>
+					 <option value="produce" >produce</option>
+					 <option value="dairy">dairy</option>
+					 <option value="coffee">coffee</option>
+					 <option value="supplies">supplies</option>
 				</select>
 				<br>
 				<input type="text" placeholder="Description" class="input-xxlarge" name="pdescription" />
@@ -78,11 +79,19 @@
 				<input type="text" placeholder="Par amount" class="input-large" name="par" />
 			<br>
 			<br>
-			<label> Product: (optional)</label>
+			<label> Product Information: (optional)</label>
 				<input type="text" placeholder="Product Brand" class="input-large" name="brand" />
 				<input type="text" placeholder="0.00" class="input-small" name="price" />
 				<input type="text" placeholder="quantity" class="input-small" name="quantity" />
-				<input type="text" placeholder="unit" class="input-small" name="unit" />
+				<select name="unit" class="input-small">
+					<option value="oz" selected>oz</option> 
+					<option value="lbs" >lbs</option>
+					<option value="gram">gram</option>
+					<option value="ml">ml</option>
+					<option value="count">count</option>
+					<option value="each">each</option>
+					<option value="each">bunch</option>
+				</select>
 				<br>
 				Primary Supplier:
 				<select name="supplier" class="input-medium"> <!--Supplement an id here instead of using 'text'-->

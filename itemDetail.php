@@ -3,10 +3,33 @@
 		<h3>Items Detail </h3>
 		<?php include "connection.php"; /** calling of connection.php that has the connection code **/ 
 		
-		    $itemId=$_GET['idItem'];
-		    
+		    $action		= $_GET['action'];
+		    $itemId		= $_GET['idItem'];
+		    $productId	= $_GET['productId'];
 		
+			if( isset( $_POST['addProduct'] ) ) /** A trigger that execute after clicking the submit 	button **/
+			{ 
+				
+				/*** Putting all the data from text into variables **/
+				$pBrand 	= $_POST['brand'];
+				$pPrice 	= $_POST['price'];
+				$pQuantity 	= $_POST['quantity']; 
+				$pUnit 		= $_POST['unit'];
+				$pSupplier 	= $_POST['supplier']; 
+				
+				// Insert Product
+				if ($mysqli->query("INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$pBrand', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$newIdItem')") != TRUE)
+				{
+					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$brand','$quantity','$unit','$supplier','$newIdItem')</div>";
+					die(mysql_error()); /*** execute the insert sql code **/
+				} else {
+					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
+				}
+			}
 		?>
+		
 		<p>Inventory Items</p>
 		<table class="table table-bordered">
               <thead>
@@ -64,7 +87,7 @@
 				while($data = $pResult->fetch_object() ):
 			  ?>
                 <tr>
-                  <td><?php echo $data->id ?></td>
+                  <td><a href="itemDetail.php?action=delete&idItem=<?php echo $itemId ?>&productId=<?php echo $data->id ?>"><button class="btn btn-info"> delete </button></td>
                   <td><?php echo $data->brand ?></td>
 				  <td><?php echo $data->price ?></td>
 				  <td><?php echo $data->quantity ?></td>
@@ -81,6 +104,47 @@
 			  ?>
               </tbody>
 		</table>
+		<form action="" method="POST">
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+						<td>
+							<input class="btn btn-info" type="submit" name="addProduct" value="Add">
+						</td>
+						<td>
+							<input type="text" placeholder="Product Brand" class="input-large" name="brand" />
+						</td>
+						<td>
+							<input type="text" placeholder="0.00" class="input-small" name="price" />
+						</td>
+						<td>
+							<input type="text" placeholder="quantity" class="input-small" name="quantity" />
+						</td>
+						<td>
+							<select name="unit" class="input-small">
+								<option value="oz" selected>oz</option> 
+								<option value="lbs" >lbs</option>
+								<option value="gram">gram</option>
+								<option value="ml">ml</option>
+								<option value="count">count</option>
+								<option value="each">each</option>
+							</select>
+						</td>
+						<td>
+							<select name="supplier" class="input-medium"> <!--Supplement an id here instead of using 'text'-->
+								<?php 
+								$result = $mysqli->query("SELECT idSupplier, supplier from supplier");
+				
+								while($data = $result->fetch_object()) {
+			  					?>
+					   				<option value="<?php echo $data->idSupplier ?>" ><?php echo $data->supplier ?></option> 
+					   			<?php } ?>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>	
 </div>
 </body>
