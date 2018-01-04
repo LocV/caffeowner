@@ -7,6 +7,7 @@
 		    $itemId		= $_GET['idItem'];
 		    $productId	= $_GET['productId'];
 		
+			// process any POST submits first.
 			if( isset( $_POST['addProduct'] ) ) /** A trigger that execute after clicking the submit 	button **/
 			{ 
 				
@@ -19,15 +20,27 @@
 				
 				// Insert Product
 				if ($mysqli->query("INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
-					VALUES('$pBrand', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$newIdItem')") != TRUE)
+					VALUES('$pBrand', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$itemId')") != TRUE)
 				{
-					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, quantity, quantityUnit, idSupplier, idItem) 
-					VALUES('$brand','$quantity','$unit','$supplier','$newIdItem')</div>";
+					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$pBrand', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$itemId')</div>";
 					die(mysql_error()); /*** execute the insert sql code **/
 				} else {
 					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
 				}
 			}
+			
+			// Process GET requests next
+			if ($action == 'delete' && $productId != ''){
+				if ($mysqli->query("DELETE FROM Product WHERE id=$productId") != TRUE)
+				{
+					echo "<div class='alert alert-info'> Error saving: DELETE FROM Product WHERE id=$productId </div>";
+					die(mysql_error()); /*** execute the insert sql code **/
+				} else {
+					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
+				}
+			}
+			
 		?>
 		
 		<p>Inventory Items</p>
