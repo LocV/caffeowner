@@ -5,7 +5,7 @@
 		<?php
 			include 'connection.php'; /** calling of connection.php that has the connection code **/
 			
-			if( isset( $_POST['addProduct'] ) ) /** A trigger that execute after clicking the submit 	button **/
+			if( isset( $_POST['addSupplier'] ) ) /** A trigger that execute after clicking the submit 	button **/
 			{ 
 				
 				/*** Putting all the data from text into variables **/
@@ -34,8 +34,9 @@
 			<label>Add Supplier: </label>
 				<input type="text" placeholder="Supplier Name" class="input-large" name="supplier" />
 				<select name="type" class="input-medium"> <!--Supplement an id here instead of using 'text'-->
-					 <option value="produce" selected>produce</option> 
-					 <option value="coffee" selected>coffee</option>
+					 <option value="bakery" >bakery</option>
+					 <option value="produce" >produce</option> 
+					 <option value="coffee" >coffee</option>
 					 <option value="grocery" >grocery</option>
 					 <option value="supplies">supplies</option>
 					 <option value="merchandise">merchandise</option>
@@ -44,10 +45,10 @@
 				<input type="text" placeholder="Contact Name" class="input-xlarge" name="contactName" />
 				<input type="text" placeholder="Email Address" class="input-xlarge" name="email" />
 				<input type="text" placeholder="Phone number" class="input-large" name="phone" />
-				<input type="text" placeholder="Notes" class="input-xXlarge" name="notes" />
+				<input type="text" placeholder="Notes" class="input-xXlarge" name="comment" />
 			<br>
 			<br>
-			<input type="submit" name="addProduct" value="Create List" class="btn btn-info" />	
+			<input type="submit" name="addSupplier" value="Add Supplier" class="btn btn-info" />	
 		</form>		
 		
 		<hr>
@@ -61,24 +62,22 @@
                   <th>Contact Name</th>
 				  <th>Email</th>
 				  <th>Phone</th>
-				  <th>Notes</th>
                 </tr>
               </thead>
               <tbody>
 			  <?php 
 				$result = $mysqli->query("SELECT idSupplier, supplier, type, contactName, email, phone, comment
-					FROM supplier ORDER BY supplier DESC");
+					FROM supplier ORDER BY supplier ASC");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
                   <td><?php echo $data->idSupplier ?></td>
-                  <td><?php echo $data->supplier ?></td>
+                  <td><a href=supplierDetails.php?supplierId=<?php echo $data->idSupplier ?>><?php echo $data->supplier ?></a></td>
                   <td><?php echo $data->type ?></td>
                   <td><?php echo $data->contactName ?></td>
 				  <td><?php echo $data->email ?></td>
 				  <td><?php echo $data->phone ?></td>
-				  <td><?php echo $data->comment ?></td>
                 </tr>
 			  <?php
 				endwhile;
