@@ -21,6 +21,7 @@
 				$unit = $_POST['unit'];
 				$brand = $_POST['brand'];
 				$price = $_POST['price'];
+				$note = $_POST['note'];
 				
 				echo "<div class='alert alert-info'> executing query: INSERT INTO Item(item, description, category, department, par) 
 							VALUES('$item','$description','$category','$dept', '$par')  </div>";
@@ -36,11 +37,11 @@
 				}
 				
 				// INSERT INTO PRODUCT
-				if ($mysqli->query("INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
-					VALUES('$brand', '$price', '$quantity','$unit','$supplier','$newIdItem')") != TRUE)
+				if ($mysqli->query("INSERT INTO Product(brand, note, price, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$brand', '$note', '$price', '$quantity','$unit','$supplier','$newIdItem')") != TRUE)
 				{
-					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, quantity, quantityUnit, idSupplier, idItem) 
-					VALUES('$brand','$quantity','$unit','$supplier','$newIdItem')</div>";
+					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, note, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$brand', '$note', '$quantity','$unit','$supplier','$newIdItem')</div>";
 					die(mysql_error()); /*** execute the insert sql code **/
 				} else {
 					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
@@ -92,9 +93,9 @@
 					<option value="each">each</option>
 					<option value="each">bunch</option>
 				</select>
-				<br>
+				<input type="text" placeholder="Notes" class="input-xxlarge" name="note" /><br>
 				Primary Supplier:
-				<select name="supplier" class="input-medium"> <!--Supplement an id here instead of using 'text'-->
+				<select name="supplier" class="input-large"> <!--Supplement an id here instead of using 'text'-->
 				<?php 
 				$result = $mysqli->query("SELECT idSupplier, supplier from supplier");
 				

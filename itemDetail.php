@@ -17,13 +17,14 @@
 				$pQuantity 	= $_POST['quantity']; 
 				$pUnit 		= $_POST['unit'];
 				$pSupplier 	= $_POST['supplier']; 
+				$pNote		= $_POST['note'];
 				
 				// Insert Product
-				if ($mysqli->query("INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
-					VALUES('$pBrand', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$itemId')") != TRUE)
+				if ($mysqli->query("INSERT INTO Product(brand, note, price, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$pBrand', '$pNote', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$itemId')") != TRUE)
 				{
-					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, price, quantity, quantityUnit, idSupplier, idItem) 
-					VALUES('$pBrand', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$itemId')</div>";
+					echo "<div class='alert alert-info'> Error saving: INSERT INTO Product(brand, note, price, quantity, quantityUnit, idSupplier, idItem) 
+					VALUES('$pBrand', '$pNote', '$pPrice', '$pQuantity','$pUnit','$pSupplier','$itemId')</div>";
 					die(mysql_error()); /*** execute the insert sql code **/
 				} else {
 					echo "<div class='alert alert-info'> Successfully Saved. </div>"; /** success message **/
@@ -85,6 +86,7 @@
                 <tr>
                   <th width="60px">ID<br></th>
                   <th>Brand</th>
+                  <th>Notes</th>
                   <th>Price</th>
 				  <th>Quantity</th>
 				  <th>Quantity Unit</th>
@@ -93,7 +95,7 @@
               </thead>
               <tbody>
 			  <?php 
-				$pResult = $mysqli->query("SELECT id, brand, price, quantity, quantityUnit, idSupplier
+				$pResult = $mysqli->query("SELECT id, brand, note, price, quantity, quantityUnit, idSupplier
 					FROM Product
 					WHERE idItem='$itemId'");
 				
@@ -102,6 +104,7 @@
                 <tr>
                   <td><a href="itemDetail.php?action=delete&idItem=<?php echo $itemId ?>&productId=<?php echo $data->id ?>"><button class="btn btn-info"> delete </button></td>
                   <td><?php echo $data->brand ?></td>
+                  <td><?php echo $data->note ?></td>
 				  <td><?php echo $data->price ?></td>
 				  <td><?php echo $data->quantity ?></td>
 				  <td><?php echo $data->quantityUnit ?></td>
@@ -126,6 +129,9 @@
 						</td>
 						<td>
 							<input type="text" placeholder="Product Brand" class="input-large" name="brand" />
+						</td>
+						<td>
+							<input type="text" placeholder="Notes" class="input-large" name="note" />
 						</td>
 						<td>
 							<input type="text" placeholder="0.00" class="input-small" name="price" />
