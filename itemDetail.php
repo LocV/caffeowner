@@ -3,6 +3,15 @@
 		<h3>Items Detail </h3>
 		<?php include "connection.php"; /** calling of connection.php that has the connection code **/ 
 		
+		function unitCost(float $price, float $quantity, string $unit)
+		{
+			$unitConversion = 1;
+			if($unit == "lbs") $unitConversion = 16; // reduce lbs to oz.
+			
+			return number_format($price/$quantity/$unitConversion, 3);
+		}
+
+		
 		    $action		= $_GET['action'];
 		    $itemId		= $_GET['idItem'];
 		    $productId	= $_GET['productId'];
@@ -89,7 +98,8 @@
                   <th>Notes</th>
                   <th>Price</th>
 				  <th>Quantity</th>
-				  <th>Quantity Unit</th>
+				  <th>Unit</th>
+				  <th>$/unit</th>
 				  <th>idSupplier</th>
                 </tr>
               </thead>
@@ -108,6 +118,7 @@
 				  <td><?php echo $data->price ?></td>
 				  <td><?php echo $data->quantity ?></td>
 				  <td><?php echo $data->quantityUnit ?></td>
+				  <td><?php echo unitCost($data->price, $data->quantity, $data->quantityUnit) ?></td>
 				  <?php 
 					  $supplierResult = $mysqli->query("Select supplier from Supplier where idSupplier='$data->idSupplier' ");
 					  $supplier = $supplierResult->fetch_object();

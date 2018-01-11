@@ -14,7 +14,6 @@
 					<table class="table table-bordered">
 						<thead>
 						  <tr>
-						    <th width="60px">Date</th>
 							<th>Name</th>
 							<th>Description</th>
 							<th>Status</th>
@@ -26,9 +25,9 @@
 					  								  ORDER BY dateCreated DESC");
 				
 							while($data = $result->fetch_object() ):
+						
 			  			?>
 			  			  <tr>
-			  			  	<td><?php echo $data->dateCreated ?></td>
 			  			  	<td><a href="viewShoppingList.php?shoppingListId=<?php echo $data->id ?>"><?php echo $data->name ?></a></td>
 			  			  	<td><?php echo $data->description ?></td>
 			  			  	<td><?php echo $data->status ?></td>
@@ -60,11 +59,11 @@
 						}
 				}
 				 		
-				$result = $mysqli->query("SELECT ShoppingList_Item.`id`, Item.idItem, status, urgency, Item.`item`, ShoppingList_Item.`quantity`
+				$result = $mysqli->query("SELECT ShoppingList_Item.`id`, Item.idItem, ShoppingList_Item.status, urgency, Item.`item`, ShoppingList_Item.`quantity`
 											FROM `Item`, `ShoppingList_Item`
 											WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
 											AND Item.`idItem` = ShoppingList_Item.`idItem`
-											order by status ASC, Item.`item`");				
+											order by ShoppingList_Item.status ASC, Item.`item`");				
 			  ?>
                 
 			  

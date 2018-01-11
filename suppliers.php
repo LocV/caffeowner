@@ -1,5 +1,6 @@
+
 <?php include 'template-parts/header.php' /** calling of header(to make it uniform in all template file) **/?>
-	<div class="container home">
+	<div class="container Suppliers">
 		<h3> Create Shopping List </h3>
 		
 		<?php
@@ -56,7 +57,6 @@
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Item_ID</th>
                   <th>Supplier</th>
                   <th>Type</th>
                   <th>Contact Name</th>
@@ -72,7 +72,6 @@
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
-                  <td><?php echo $data->idSupplier ?></td>
                   <td><a href=supplierDetails.php?supplierId=<?php echo $data->idSupplier ?>><?php echo $data->supplier ?></a></td>
                   <td><?php echo $data->type ?></td>
                   <td><?php echo $data->contactName ?></td>
