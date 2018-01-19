@@ -1,12 +1,17 @@
-<?php include 'template-parts/header.php' /** calling of header(to make it uniform in all template file) **/?>
+<?php include 'template-parts/header.php'; /** calling of header(to make it uniform in all template file) **/
+	  include 'utility/itemHistory.php';
+?>
 	<div class="container home">
 		<h3> Edit Shopping List </h3>
 		<?php
 			include 'connection.php'; /** calling of connection.php that has the connection code **/
+			include 'utility/dateDiff.php';
 			
-			$itemId=$_GET['itemId'];
-			$shoppingListId=$_GET['shoppingListId'];
-			$filterType=$_GET['filter'];
+			$itemId			=$_GET['itemId'];
+			$shoppingListId	=$_GET['shoppingListId'];
+			$filterType		=$_GET['filter'];
+			$action			=$_GET['action'];
+			
 			if ($filterType == '') $filterType='item';
 			
 			if ($itemId >= 1)
@@ -17,9 +22,18 @@
 					and idItem = '$itemId'");
 				if ($itemCheck->num_rows == 0)
 				{
-					// insert newe item
+					// insert new item
 					if($result = $mysqli->query("INSERT INTO ShoppingList_Item(idShoppingList, idItem) 
 						VALUES('$shoppingListId','$itemId')") != true)
+					{
+						die(mysql_error()); /*** execute the insert sql code **/
+					} else {
+						echo "<div class='alert alert-info'>Item successfully added to shopping list </div>"; /** success message **/
+					}
+					
+					// Add to ItemHistory
+					if($result = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemId', '$addToShoppingList', '$shoppingListId')") != true)
 					{
 						die(mysql_error()); /*** execute the insert sql code **/
 					} else {
@@ -53,6 +67,7 @@
 							<th>Name</th>
 							<th>Description</th>
 							<th>Status</th>
+							<th>Close</th>
                 		  </tr>
               			</thead>
 			  		   <tbody>
@@ -67,13 +82,95 @@
 			  			  	<td><a href="editShoppingList.php?shoppingListId=<?php echo $data->id ?>"><?php echo $data->name ?></a></td>
 			  			  	<td><?php echo $data->description ?></td>
 			  			  	<td><?php echo $data->status ?></td>
+			  			  	<td><a href="editShoppingList.php?shoppingListId=<?php echo $data->id ?>&action=close"><button class="btn btn-info"> Close </button></td>
                 		  </tr>
 						<?php	
 							endwhile;
 				
 			  			?>
 			  		</table>
-		<?php } else { ?>
+		<?php } else if ($action == "close"){ 
+			
+			// Close out this shipping list
+			echo "<div class='alert alert-info'>Let's close out this shopping list</div>";
+			
+			$dateNow = new dateTime('now');
+			
+			// 1) Iterate through every item in shopping list and update the status of each shipping list item
+			$result = $mysqli->query("SELECT Item.idItem, Item.item, quantity, urgency, frequency
+									  FROM `Item`, `ShoppingList_Item`
+									  WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
+									  AND Item.`idItem` = ShoppingList_Item.`idItem`");
+				
+				while($data = $result->fetch_object() ){
+					$frequency = 1;
+						
+					// Update frequency count
+					$itemInContext = $data->idItem;
+					echo "<div class='alert alert-info'>Debug itemInContext: $itemInContext</div>";
+					
+					// Select the most recent history for the item.
+					$ihResult = $mysqli->query("SELECT idItem, action, date
+											  FROM itemHistory
+											  Where idItem='$itemInContext'
+											  ORDER BY date DESC
+											  LIMIT 1");						  
+					
+					// Only process frequency if item has a purchase history.						  
+					while ($data = $ihResult->fetch_object()){
+										
+						echo "<div class='alert alert-info'>DEBUG itemInContext: $itemInContext</div>";
+					
+						$daysDiff = days_diff(new dateTime($data->date),$dateNow);
+						echo "<div class='alert alert-info'>Frequency diff:  Days since last Purachase: $daysDiff </div>";
+						
+						// get current frequency
+						$currentFrequency = 0;
+						if($frequencyQR = $mysqli->query("SElECT frequency FROM Item WHERE idItem=$itemInContext"))
+						{
+							$currentFrequency = $frequencyQR->fetch_object();
+						}
+						
+						$newFrequency = ($currentFrequency + $daysDiff)/2;
+						
+						// Insert new frequency
+						if($insertResult = $mysqli->query("UPDATE Item 
+														   SET frequency = $newFrequency
+														   WHERE idItem = '$itemInContext'") != true)
+						{
+							die(mysql_error());
+						} else {
+							echo "<div class='alert alert-info'>ItemHistory successfully updated frequency :$newFrequency </div>"; /** success message **/
+						}
+					}
+					
+					// update itemHistory
+					if($insertResult = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemInContext', '$IHpurchased', '$shoppingListId')") != true)
+					{
+						echo "<div class='alert alert-info'>Error executing query: INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemInContext', '$IHpurchased', '$shoppingListId') </div>";
+						die(mysql_error());
+					} else {
+						echo "<div class='alert alert-info'>ItemHistory successfully added </div>"; /** success message **/
+					}
+											  
+					
+				}
+					
+				// update shopping list status
+				if($insertResult = $mysqli->query("UPDATE ShoppingList
+												   SET status='$COfulfilled'
+												   WHERE id='$shoppingListId'") != true)
+				{
+					die(mysql_error()); 
+				} else {
+					echo "<div class='alert alert-info'>ShoppingList status successfully updated </div>"; /** success message **/
+				}
+				
+					
+		}
+		else { ?>
 		
 		<div style="overflow-y: scroll; height:300px;">
 		<label>Inventory Items</label>
