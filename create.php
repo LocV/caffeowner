@@ -73,6 +73,7 @@
 					 <option value="dairy">dairy</option>
 					 <option value="coffee">coffee</option>
 					 <option value="supplies">supplies</option>
+					 <option value="meat">meat</option>
 				</select>
 				<br>
 				<input type="text" placeholder="Description" class="input-xxlarge" name="pdescription" />

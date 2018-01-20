@@ -124,18 +124,22 @@
 						$daysDiff = days_diff(new dateTime($data->date),$dateNow);
 						echo "<div class='alert alert-info'>Frequency diff:  Days since last Purachase: $daysDiff </div>";
 						
+						// don't divide by zero
+						if ($daysDiff == 0){ $daysDiff = 1; }
+						
 						// get current frequency
-						if ($daysDiff == 0){
+						if ($currentFrequency == 0){
 							$currentFrequency = 7/14; // default frequency is 2 weeks
 						} else {
 							$currentFrequency = 7/$daysDiff;
 						}
+						
 						if($frequencyQR = $mysqli->query("SElECT frequency FROM Item WHERE idItem=$itemInContext"))
 						{
-							$currentFrequency = $frequencyQR->fetch_object();
+							$frequency = $frequencyQR->fetch_object();
 						}
 						
-						$newFrequency = ($currentFrequency + $daysDiff)/2;
+						$newFrequency = ($currentFrequency + $frequency)/2;
 						
 						// Insert new frequency
 						if($insertResult = $mysqli->query("UPDATE Item 
