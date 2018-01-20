@@ -96,15 +96,41 @@
 			
 			$dateNow = new dateTime('now');
 			
-			// 1) Iterate through every item in shopping list and update the status of each shipping list item
-			$result = $mysqli->query("SELECT Item.idItem, Item.item, quantity, urgency, frequency
+			// 1) Iterate through every item in shopping list and update the status of each shipping list item that has been fulfilled
+			$result = $mysqli->query("SELECT Item.idItem, Item.item, quantity, urgency, frequency, shoppingList_Item.status
 									  FROM `Item`, `ShoppingList_Item`
 									  WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
 									  AND Item.`idItem` = ShoppingList_Item.`idItem`");
 				
 				while($data = $result->fetch_object() ){
-					$frequency = 1;
+					echo "<div class='alert alert-info'>DEBUG: Displaying status: $data->status </div>";
+					// check to see if item is fulfilled or deferred
+					if ( $data->status == $STATUS_DEFERRED){
+						// update the Item History
+						if($insertResult = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId')") != true)
+						{
+							echo "<div class='alert alert-info'>Error executing query: INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId') </div>";
+						die(mysql_error());
+						} else {
+							echo "<div class='alert alert-info'>ItemHistory of deferred successfully added </div>"; /** success message **/
+						}
 						
+						// Update the Item status
+						if($insertResult = $mysqli->query("UPDATE Item 
+														   SET status = '$STATUS_DEFERRED'
+														   WHERE idItem = '$itemInContext' ") != true)
+						{
+							echo "<div class='alert alert-info'>Error executing query: UPDATE Item SET status = '$STATUS_DEFERRED' WHERE idItem = '$itemInContext') </div>";
+						die(mysql_error());
+						} else {
+							echo "<div class='alert alert-info'>Update Item status to deferred successful </div>"; /** success message **/
+						}
+						
+					}else{
+					$frequency = 1;
+					
 					// Update frequency count
 					$itemInContext = $data->idItem;
 					echo "<div class='alert alert-info'>Debug itemInContext: $itemInContext</div>";
@@ -164,6 +190,7 @@
 					}
 											  
 					
+				}
 				}
 					
 				// update shopping list status

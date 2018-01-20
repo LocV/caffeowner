@@ -98,7 +98,7 @@
 				       	?>
 				       		<tr bgcolor="#eee">
 					    <?php
-			       		}else if ($listArray['status'] == 'defer')
+			       		}else if ($listArray['status'] == 'deferred')
 			       		{
 				       	?>
 				       		<tr bgcolor="#fbfdea">
@@ -112,7 +112,7 @@
 			       					       			
 				       		<td><a href="viewShoppingList.php?itemStatus=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Purchase </button></td>
 				       		<td>					  			
-					       		<a href="viewShoppingList.php?itemStatus=defer&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
+					       		<a href="viewShoppingList.php?itemStatus=deferred&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
 					  		</td>
 				       		<td><a href="itemDetail.php?idItem=<?php echo $listArray['idItem'] ?>"><?php echo $listArray['item'] ?></td>
 				       		<?php 
