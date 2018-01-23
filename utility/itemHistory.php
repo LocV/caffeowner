@@ -1,7 +1,9 @@
 <?php
 	
+$DEBUGGING = false;
+
 // ItemHistory table Action column
-$IHaddToList 	= 'addToList';
+$IH_ADDTOLIST 	= 'addToShoppingList';
 $IHaddToCart	= 'addToCart';
 $IHpurchased	= 'purchased';
 $IHdeferred	= 'deferred';

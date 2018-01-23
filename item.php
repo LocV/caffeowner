@@ -6,8 +6,7 @@
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Item_ID<br></th>
-                  <th>Item</th>
+                  <th width="60px">Item</th>
                   <th>Description</th>
 				  <th>Par</th>
 				  <th>Department
@@ -27,14 +26,14 @@
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("SELECT Item.idItem, item, description, par, department, category, frequency
+				$result = $mysqli->query("SELECT item, description, par, department, category, frequency
 					FROM Item
-					WHERE department='BOH' or department='FOH' or department='ALL'");
+					WHERE department='BOH' or department='FOH' or department='ALL'
+					ORDER BY item");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
-                  <td><?php echo $data->idItem ?></td>
                   <td><a href="itemDetail.php?idItem=<?php echo $data->idItem ?>"><?php echo $data->item ?></a></td>
 				  <td><?php echo $data->description ?></td>
 				  <td><?php echo $data->par ?></td>

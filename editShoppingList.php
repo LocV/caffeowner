@@ -33,11 +33,11 @@
 					
 					// Add to ItemHistory
 					if($result = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
-												 VALUES('$itemId', '$addToShoppingList', '$shoppingListId')") != true)
+												 VALUES('$itemId', '$IH_ADDTOLIST', '$shoppingListId')") != true)
 					{
 						die(mysql_error()); /*** execute the insert sql code **/
 					} else {
-						echo "<div class='alert alert-info'>Item successfully added to shopping list </div>"; /** success message **/
+						echo "<div class='alert alert-info'>Item successfully added to ItemHistory </div>"; /** success message **/
 					}
 				}
 				else
