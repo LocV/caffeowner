@@ -1,6 +1,6 @@
 <?php
 	
-$DEBUGGING = false;
+$DEBUGGING = true;
 
 // ItemHistory table Action column
 $IH_ADDTOLIST 	= 'addToShoppingList';

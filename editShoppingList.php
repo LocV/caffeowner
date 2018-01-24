@@ -103,10 +103,12 @@
 									  AND Item.`idItem` = ShoppingList_Item.`idItem`");
 				
 				while($data = $result->fetch_object() ){
+					$itemInContext = $data->idItem;
+					echo "<div class='alert alert-info'>DEBUG: Processing item:  $itemInContext</div>";
 					echo "<div class='alert alert-info'>DEBUG: Displaying status: $data->status </div>";
 					// check to see if item is fulfilled or deferred
 					if ( $data->status == $STATUS_DEFERRED){
-						// update the Item History
+						// 1) update the Item History
 						if($insertResult = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
 												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId')") != true)
 						{
@@ -114,10 +116,11 @@
 												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId') </div>";
 						die(mysql_error());
 						} else {
-							echo "<div class='alert alert-info'>ItemHistory of deferred successfully added </div>"; /** success message **/
+							echo "<div class='alert alert-info'>ItemHistory of deferred successfully added: $itemInContext </div>"; /** success message **/
 						}
 						
-						// Update the Item status
+						// 2) Update the Item status
+						
 						if($insertResult = $mysqli->query("UPDATE Item 
 														   SET status = '$STATUS_DEFERRED'
 														   WHERE idItem = '$itemInContext' ") != true)
@@ -125,13 +128,13 @@
 							echo "<div class='alert alert-info'>Error executing query: UPDATE Item SET status = '$STATUS_DEFERRED' WHERE idItem = '$itemInContext') </div>";
 						die(mysql_error());
 						} else {
-							echo "<div class='alert alert-info'>Update Item status to deferred successful </div>"; /** success message **/
+							echo "<div class='alert alert-info'>Update Item status to deferred successful: $itemInContext </div>"; /** success message **/
 						}
 						
 					}else{
 					$frequency = 1;
 					
-					// Update frequency count
+					// 3) Update frequency count
 					$itemInContext = $data->idItem;
 					echo "<div class='alert alert-info'>Debug itemInContext: $itemInContext</div>";
 					
