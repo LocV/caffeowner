@@ -26,7 +26,7 @@
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("SELECT item, description, par, department, category, frequency
+				$result = $mysqli->query("SELECT idItem, item, description, par, department, category, frequency
 					FROM Item
 					WHERE department='BOH' or department='FOH' or department='ALL'
 					ORDER BY item");
