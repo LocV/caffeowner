@@ -74,6 +74,7 @@
 					 <option value="coffee">coffee</option>
 					 <option value="supplies">supplies</option>
 					 <option value="meat">meat</option>
+					 <option value="grocery">grocery</option>
 				</select>
 				<br>
 				<input type="text" placeholder="Description" class="input-xxlarge" name="pdescription" />
@@ -93,6 +94,7 @@
 					<option value="count">count</option>
 					<option value="each">each</option>
 					<option value="each">bunch</option>
+					<option value="gallon">gallon</option>
 				</select>
 				<input type="text" placeholder="Notes" class="input-xxlarge" name="note" /><br>
 				Primary Supplier:
