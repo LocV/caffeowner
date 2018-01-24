@@ -134,7 +134,7 @@
 					}else{
 					$frequency = 1;
 					
-					// 3) Update frequency count
+					// 1) Update frequency count
 					$itemInContext = $data->idItem;
 					echo "<div class='alert alert-info'>Debug itemInContext: $itemInContext</div>";
 					
@@ -181,7 +181,20 @@
 						}
 					}
 					
-					// update itemHistory
+					// 2) update Item status
+					if($insertResult = $mysqli->query("UPDATE Item 
+													   SET status = '$STATUS_INSTOCK'
+													   WHERE idItem = '$itemInContext'") != true)
+					{
+						echo "<div class='alert alert-info'>Error executing query: UPDATE Item 
+													   SET status = '$STATUS_INSTOCK'
+													   WHERE idItem = '$itemInContext') </div>";
+						die(mysql_error());
+					} else {
+						echo "<div class='alert alert-info'>ItemHistory successfully added:  $itemInContext</div>"; /** success message **/
+					}
+					
+					// 3) update itemHistory
 					if($insertResult = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
 												 VALUES('$itemInContext', '$IHpurchased', '$shoppingListId')") != true)
 					{
@@ -196,7 +209,7 @@
 				}
 				}
 					
-				// update shopping list status
+				// 4) update shopping list status
 				if($insertResult = $mysqli->query("UPDATE ShoppingList
 												   SET status='$COfulfilled'
 												   WHERE id='$shoppingListId'") != true)
