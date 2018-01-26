@@ -13,6 +13,10 @@ $IHlistClosed	= 'listClosed';
 $COopen			= 'open';
 $COfulfilled 	= 'fulfilled';
 
+// ShoppingListItem table Status column
+$SLI_PURCHASE	= 'purchase';
+$SLI_FULFILLED	= 'fulfilled';
+$SLI_DEFERRED	= 'deferred';
 
 // Item statuses
 $STATUS_DEFERRED 	= 'deferred';

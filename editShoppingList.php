@@ -106,33 +106,9 @@
 					$itemInContext = $data->idItem;
 					echo "<div class='alert alert-info'>DEBUG: Processing item:  $itemInContext</div>";
 					echo "<div class='alert alert-info'>DEBUG: Displaying status: $data->status </div>";
+					
 					// check to see if item is fulfilled or deferred
-					if ( $data->status == $STATUS_DEFERRED){
-						// 1) update the Item History
-						if($insertResult = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
-												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId')") != true)
-						{
-							echo "<div class='alert alert-info'>Error executing query: INSERT INTO ItemHistory(idItem, action, idShoppingList) 
-												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId') </div>";
-						die(mysql_error());
-						} else {
-							echo "<div class='alert alert-info'>ItemHistory of deferred successfully added: $itemInContext </div>"; /** success message **/
-						}
-						
-						// 2) Update the Item status
-						
-						if($insertResult = $mysqli->query("UPDATE Item 
-														   SET status = '$STATUS_DEFERRED'
-														   WHERE idItem = '$itemInContext' ") != true)
-						{
-							echo "<div class='alert alert-info'>Error executing query: UPDATE Item SET status = '$STATUS_DEFERRED' WHERE idItem = '$itemInContext') </div>";
-						die(mysql_error());
-						} else {
-							echo "<div class='alert alert-info'>Update Item status to deferred successful: $itemInContext </div>"; /** success message **/
-						}
-						
-					}else{
-					$frequency = 1;
+					if ($data->status == $SLI_FULFILLED){
 					
 					// 1) Update frequency count
 					$itemInContext = $data->idItem;
@@ -157,17 +133,15 @@
 						if ($daysDiff == 0){ $daysDiff = 1; }
 						
 						// get current frequency
-						if ($currentFrequency == 0){
-							$currentFrequency = 7/14; // default frequency is 2 weeks
-						} else {
-							$currentFrequency = 7/$daysDiff;
-						}
+						$currentFrequency = 7/$daysDiff;
 						
 						if($frequencyQR = $mysqli->query("SElECT frequency FROM Item WHERE idItem=$itemInContext"))
 						{
-							$frequency = $frequencyQR->fetch_object();
+							$fData = $frequencyQR->fetch_object();
+							$frequency = $fData->frequency;
 						}
 						
+						// new frequency is the average of the old and current frequency
 						$newFrequency = ($currentFrequency + $frequency)/2;
 						
 						// Insert new frequency
@@ -177,7 +151,7 @@
 						{
 							die(mysql_error());
 						} else {
-							echo "<div class='alert alert-info'>ItemHistory successfully updated frequency :$newFrequency </div>"; /** success message **/
+							echo "<div class='alert alert-info'>ItemHistory successfully updated frequency :$newFrequency = ( $currentFrequency + $frequency )/2</div>"; /** success message **/
 						}
 					}
 					
@@ -206,7 +180,31 @@
 					}
 											  
 					
-				}
+				}else {
+						// 1) update the Item History
+						if($insertResult = $mysqli->query("INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId')") != true)
+						{
+							echo "<div class='alert alert-info'>Error executing query: INSERT INTO ItemHistory(idItem, action, idShoppingList) 
+												 VALUES('$itemInContext', '$STATUS_DEFERRED', '$shoppingListId') </div>";
+						die(mysql_error());
+						} else {
+							echo "<div class='alert alert-info'>ItemHistory of deferred successfully added: $itemInContext </div>"; /** success message **/
+						}
+						
+						// 2) Update the Item status
+						
+						if($insertResult = $mysqli->query("UPDATE Item 
+														   SET status = '$STATUS_DEFERRED'
+														   WHERE idItem = '$itemInContext' ") != true)
+						{
+							echo "<div class='alert alert-info'>Error executing query: UPDATE Item SET status = '$STATUS_DEFERRED' WHERE idItem = '$itemInContext') </div>";
+						die(mysql_error());
+						} else {
+							echo "<div class='alert alert-info'>Update Item status to deferred successful: $itemInContext </div>"; /** success message **/
+						}
+						
+					}
 				}
 					
 				// 4) update shopping list status
