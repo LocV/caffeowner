@@ -158,6 +158,7 @@
 								<option value="ml">ml</option>
 								<option value="count">count</option>
 								<option value="each">each</option>
+								<option value="gallon">gallon</option>
 							</select>
 						</td>
 						<td>
