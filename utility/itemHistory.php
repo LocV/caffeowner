@@ -6,6 +6,7 @@ $DEBUGGING = true;
 $IH_ADDTOLIST 	= 'addToShoppingList';
 $IHaddToCart	= 'addToCart';
 $IHpurchased	= 'purchased';
+$IH_PURCHASED	= 'purchased';
 $IHdeferred	= 'deferred';
 $IHlistClosed	= 'listClosed';
 

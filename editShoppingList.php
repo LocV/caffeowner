@@ -118,6 +118,7 @@
 					$ihResult = $mysqli->query("SELECT idItem, action, date
 											  FROM itemHistory
 											  Where idItem='$itemInContext'
+											  AND action='$IH_PURCHASED'
 											  ORDER BY date DESC
 											  LIMIT 1");						  
 					

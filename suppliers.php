@@ -1,6 +1,6 @@
 
 <?php include 'template-parts/header.php' /** calling of header(to make it uniform in all template file) **/?>
-	<div class="container Suppliers">
+	<div class="container home">
 		<h3> Create Shopping List </h3>
 		
 		<?php
