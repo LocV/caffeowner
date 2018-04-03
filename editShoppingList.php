@@ -11,8 +11,9 @@
 			$shoppingListId	=$_GET['shoppingListId'];
 			$filterType		=$_GET['filter'];
 			$action			=$_GET['action'];
+			$filterDept		=$_GET['department'];
 			
-			if ($filterType == '') $filterType='item';
+//			if ($filterType == '') $filterType='item';
 			
 			if ($itemId >= 1)
 			{
@@ -222,11 +223,11 @@
 		}
 		else { ?>
 		
-		<div style="overflow-y: scroll; height:300px;">
-		<label>Inventory Items</label>
+		<div style="overflow-y: scroll; height:400px;">
 		<label>Filter by:</label>
-			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&filter=department"><button class="btn btn-info"> Department </button></a>  
-			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&filter=category"><button class="btn btn-info"> Category </button></a>
+			Department: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=BOH"><button class="btn btn-info"> BOH </button></a> 
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=FOH"><button class="btn btn-info"> FOH </button></a>
+			Category: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&filter=category"><button class="btn btn-info"> Category </button></a>
 		<table class="table table-bordered">
               <thead>
                 <tr>
@@ -239,9 +240,17 @@
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
+				if ($filterDept == '') {
+					$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
 									      FROM Item
-										  ORDER BY $filterType");
+									      ORDER BY '$filterType'");
+				} else {
+					$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
+									      FROM Item
+									      WHERE department = '$filterDept' OR department = 'AlL'
+									      ORDER BY department");
+										  
+				}
 				
 				while($data = $result->fetch_object() ):
 			  ?>
