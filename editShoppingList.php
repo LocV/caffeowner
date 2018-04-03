@@ -223,7 +223,7 @@
 		}
 		else { ?>
 		
-		<div style="overflow-y: scroll; height:400px;">
+		<div style="overflow-y: scroll; height:500px;">
 		<label>Filter by:</label>
 			Department: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=BOH"><button class="btn btn-info"> BOH </button></a> 
 			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=FOH"><button class="btn btn-info"> FOH </button></a>
@@ -248,7 +248,7 @@
 					$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
 									      FROM Item
 									      WHERE department = '$filterDept' OR department = 'AlL'
-									      ORDER BY department");
+									      ORDER BY item");
 										  
 				}
 				
