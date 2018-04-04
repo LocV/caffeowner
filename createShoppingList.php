@@ -80,8 +80,7 @@
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="60px">Item_ID</th>
-                  <th>Date</th>
+                  <th width="60px">Date</th>
                   <th>Name</th>
 				  <th>Description</th>
                 </tr>
@@ -89,12 +88,12 @@
               <tbody>
 			  <?php 
 				$result = $mysqli->query("SELECT id, dateModified, name, description
-					FROM ShoppingList ORDER BY dateModified DESC");
+					FROM ShoppingList ORDER BY dateModified DESC
+					LIMIT 10");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
-                  <td><?php echo $data->id ?></td>
                   <td><?php echo $data->dateModified ?></td>
                   <td><?php echo $data->name ?></td>
 				  <td><?php echo $data->description ?></td>
