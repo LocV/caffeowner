@@ -224,7 +224,7 @@
 		}
 		else { ?>
 		
-		<div style="overflow-y: scroll; height:500px;">
+		<div style="overflow-y: scroll; height:400px;">
 		<label>Filter by:</label>
 			Department: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=BOH"><button class="btn btn-info"> BOH </button></a> 
 			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=FOH"><button class="btn btn-info"> FOH </button></a>
