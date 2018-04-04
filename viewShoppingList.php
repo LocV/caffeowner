@@ -22,7 +22,8 @@
 			  		   <tbody>
 				  		<?php 
 					  		$result = $mysqli->query("SELECT id, dateCreated, name, description, status FROM ShoppingList
-					  								  ORDER BY dateCreated DESC");
+					  								  ORDER BY dateCreated DESC
+					  								  LIMIT 10");
 				
 							while($data = $result->fetch_object() ):
 						
