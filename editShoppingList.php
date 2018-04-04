@@ -283,7 +283,8 @@
 				$result = $mysqli->query("SELECT Item.item, quantity, urgency
 											FROM `Item`, `ShoppingList_Item`
 											WHERE ShoppingList_Item.`idShoppingList` = '$shoppingListId' 
-											AND Item.`idItem` = ShoppingList_Item.`idItem`");
+											AND Item.`idItem` = ShoppingList_Item.`idItem`
+											ORDER BY ShoppingList_Item.dateModified DESC");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
