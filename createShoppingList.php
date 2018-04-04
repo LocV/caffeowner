@@ -68,7 +68,7 @@
 				<br>
 				<input type="text" placeholder="Description" class="input-xxlarge" name="description" />
 			<br>
-			<input type="checkbox" name="importItem" value="deferred"> Import deferred items.
+			<input type="checkbox" name="importItem" value="deferred" checked> Import deferred items.
 			<br>
 			<input type="submit" name="createList" value="Create List" class="btn btn-info" />
 			<br> 
