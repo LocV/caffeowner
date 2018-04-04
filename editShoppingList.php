@@ -227,7 +227,6 @@
 		<label>Filter by:</label>
 			Department: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=BOH"><button class="btn btn-info"> BOH </button></a> 
 			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=FOH"><button class="btn btn-info"> FOH </button></a>
-			Category: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&filter=category"><button class="btn btn-info"> Category </button></a>
 		<table class="table table-bordered">
               <thead>
                 <tr>

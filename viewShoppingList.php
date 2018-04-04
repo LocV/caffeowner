@@ -81,8 +81,7 @@
 		<table class="table table-bordered">
               <thead>
                 <tr>
-                  <th width="50px">Item_ID</th>
-                  <th>Status</th>
+                  <th width="50px">Action</th>
                   <th>Item</th>
                   <th>Quantity</th>
 				  <th>Price</th>
@@ -97,23 +96,27 @@
 			       		{
 				       	?>
 				       		<tr bgcolor="#eee">
+					       		<td><a href="viewShoppingList.php?itemStatus=deferred&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
+							   	</td>
 					    <?php
 			       		}else if ($listArray['status'] == 'deferred')
 			       		{
 				       	?>
 				       		<tr bgcolor="#fbfdea">
+					       		<td><a href="viewShoppingList.php?itemStatus=purchase&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Clear </button>
+						       	</td>
 					    <?php
 						} else {
 						?>
 				       		<tr>
+					       		<td><a href="viewShoppingList.php?itemStatus=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Purchase </button>
+						       	</td>
 					    <?php
 			       		}
 			       		?>
 			       					       			
-				       		<td><a href="viewShoppingList.php?itemStatus=fulfilled&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Purchase </button></td>
-				       		<td>					  			
-					       		<a href="viewShoppingList.php?itemStatus=deferred&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
-					  		</td>
+				       		
+				       		
 				       		<td><a href="itemDetail.php?idItem=<?php echo $listArray['idItem'] ?>"><?php echo $listArray['item'] ?></td>
 				       		<?php 
 					       		$products = $mysqli->query("SELECT price, supplier 
