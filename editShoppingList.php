@@ -12,6 +12,7 @@
 			$filterType		=$_GET['filter'];
 			$action			=$_GET['action'];
 			$filterDept		=$_GET['department'];
+			$filterCategory =$_GET['category'];
 			
 //			if ($filterType == '') $filterType='item';
 			
@@ -226,8 +227,15 @@
 		
 		<div style="overflow-y: scroll; height:400px;">
 		<label>Filter by:</label>
-			Department: <a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=BOH"><button class="btn btn-info"> BOH </button></a> 
-			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&department=FOH"><button class="btn btn-info"> FOH </button></a>
+			Category: 
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=produce"><button class="btn btn-info"> produce </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=baking"><button class="btn btn-info"> baking </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=cheese"><button class="btn btn-info"> cheese </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=dairy"><button class="btn btn-info"> dairy </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=meat"><button class="btn btn-info"> meat </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=grocery"><button class="btn btn-info"> grocery </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=supplies"><button class="btn btn-info"> supplies </button></a>
+			<a href="editShoppingList.php?shoppingListId=<?php echo $shoppingListId ?>&category=coffee"><button class="btn btn-info"> coffee </button></a>
 		<table class="table table-bordered">
               <thead>
                 <tr>
@@ -240,14 +248,14 @@
               </thead>
               <tbody>
 			  <?php 
-				if ($filterDept == '') {
+				if ($filterCategory == '') {
 					$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
 									      FROM Item
 									      ORDER BY '$filterType'");
 				} else {
 					$result = $mysqli->query("SELECT idItem, item, description, par, department, category 
 									      FROM Item
-									      WHERE department = '$filterDept' OR department = 'AlL'
+									      WHERE category = '$filterCategory'
 									      ORDER BY item");
 										  
 				}
