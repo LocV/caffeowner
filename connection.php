@@ -8,4 +8,3 @@
 	}
 
 	$mysqli->select_db("Torino"); /** This will select the databasename **/
-
