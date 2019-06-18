@@ -2,7 +2,6 @@
 
     // products array
     $suppliers=array();
-    $suppliers=array();
 
     $result = $mysqli->query("SELECT idSupplier, supplier, type, contactName, email, phone, comment
                     FROM supplier ORDER BY supplier ASC");
@@ -19,8 +18,6 @@
             "phone" => $data->phone,
             "comment" => $data->comment,
         );
-
-//        echo $data->supplier;
 
         array_push($suppliers, $supplier);
 

@@ -6,7 +6,7 @@
 #wrapper {
 	margin: 0 auto;
 	float: none;
-	width:70%;
+	width:95%;
 }
 .header {
 	padding:10px 0;

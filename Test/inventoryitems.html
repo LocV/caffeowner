@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../css/caffeowner.css" rel="stylesheet">
+    
+	<title>CaffeOwner MVP 1.0 - Inventory Items</title>
+  </head>
+  <body>
+  	<p>This is a test</p>
+  	<button id="loadInvButton">Load Inventory Items</button>
+  
+  	<section class="table-section">
+	  	<table class="std-table">
+		  	<tr>
+			  	<th>Item Name</th>
+			  	<th>Description</th>
+			  	<th>Dept.</th>
+			  	<th>Category</th>
+		  	</tr>
+		  	<div id="items"></div>
+	  	</table>
+  	</section>
+  	
+  	<script>
+	  	// create event Listner
+	  	document.getElementById('loadInvButton').addEventListener('click', loadItems);
+	  	
+	  	function loadItems(){
+		  	// Create XHR Object
+		  	var xhr = new XMLHttpRequest();
+		  	
+		  	// OPEN - type, url/file, async
+		  	xhr.open('GET', '../product/read.php', true);
+		  	
+		  	console.log('READYSTATE: ', xhr.readyState);
+		  	
+		  	// OPTIONAL - used for loaders
+		  	xhr.onprogress = function(){
+		  		console.log('READYSTATE: ', xhr.readyState);
+      		}
+		  	
+		  	xhr.onload = function(){
+			  	if(this.status == 200){
+				  var items = JSON.parse(this.responseText);
+				  
+				  var output = '<table>';
+				  for(var i in items){
+					  output +=
+//					  	'<p> Test </p>';
+					  	'<tr>' +
+//					  	'<li>row '+'</li>' +
+					  	'<th>'+items[i].brand+'</th>' +
+					  	'<th>' +items[i].price+ '</th>' +
+					  	'<th>' +items[i].quantity+ '</th>' +
+					  	'<th>' +items[i].idSupplier+ '</th>' +
+					  	'</tr>';
+				  }
+				  
+				  output += '</table>';
+//				  	document.getElementById('items').innerHTML = this.responseText;
+					document.getElementById('items').innerHTML = output;
+			  	}else if(this.status = 404){
+			  		document.getElementById('items').innerHTML = 'Not Found';
+        		}
+		  	}
+		  	
+		  	xhr.send();
+	  	}
+	</script>
+  </body>
+</html>
