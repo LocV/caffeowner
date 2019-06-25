@@ -11,7 +11,7 @@
      //   extract($data);
 
         $item=array(
-            "idItem" => $data->idItem,
+            "id" => $data->idItem,
             "item" => $data->item,
             "description" => $data->description,
             "par" => $data->par,
