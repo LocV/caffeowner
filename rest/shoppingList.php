@@ -1,4 +1,5 @@
 <?php include "../connection.php"; /** calling of connection.php that has the connection code **/ 
+    header("Access-Control-Allow-Origin: *");
 
     // products array
     $ShoppingLists=array();
