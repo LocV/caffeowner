@@ -34,9 +34,10 @@
         echo json_encode($ShoppingLists);
 
     }
+    // If itemId is being passed, we ned to update the shopping list with this Id.
     elseif ($itemId >= 1)
     {
-    //
+    
         // make sure this item does not already exist
         $itemCheck = $mysqli->query("Select * from  ShoppingList_Item
             where idShoppingList = '$shoppingListId'
@@ -96,6 +97,8 @@
                 $ListItem=array(
                     "item" => $data->item,
                     "idItem" => $data->idItem,
+                    "status" => $data->status,
+                    "urgency" => $data->urgency,
                     "quantity" => $data->quantity,
                     "price" => $product->price,
                     "supplier" => $product->supplier
