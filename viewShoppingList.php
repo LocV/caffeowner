@@ -97,8 +97,15 @@
 			       		{
 				       	?>
 				       		<tr bgcolor="#eee">
-					       		<td><a href="viewShoppingList.php?itemStatus=deferred&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
+					       		<td><a href="viewShoppingList.php?itemStatus=ordered&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Ordered </button>
 							   	</td>
+						  <?php
+			       		}else if ($listArray['status'] == 'ordered')
+			       		{
+				       	?>
+				       	    <tr bgcolor="#90ee90">
+					       		<td><a href="viewShoppingList.php?itemStatus=deferred&shoppingListId=<?php echo $shoppingListId ?>&ShopListId=<?php echo $listArray['id'] ?>"><button class="btn btn-info"> Defer </button>
+						       	</td>
 					    <?php
 			       		}else if ($listArray['status'] == 'deferred')
 			       		{
