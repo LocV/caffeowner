@@ -19,7 +19,7 @@
 				$comment 	= $_POST['comment'];
 				
 				echo "<div class='alert alert-info'> executing querry: INSERT INTO supplier(supplier, type, contactName, email, phone, comment) 
-					VALUES('$supplier', '$type', '$name, $email, $phone, $comment'))  </div>";
+					VALUES('$supplier', '$type', '$name', '$email', '$phone', '$comment'))  </div>";
 				
 				if ($mysqli->query("INSERT INTO supplier(supplier, type, contactName, email, phone, comment) 
 					VALUES('$supplier', '$type', '$name', '$email', '$phone', '$comment')") != TRUE)
@@ -58,25 +58,25 @@
               <thead>
                 <tr>
                   <th>Supplier</th>
-                  <th>Type</th>
                   <th>Contact Name</th>
 				  <th>Email</th>
 				  <th>Phone</th>
+				  <th>Notes</th>
                 </tr>
               </thead>
               <tbody>
 			  <?php 
-				$result = $mysqli->query("SELECT idSupplier, supplier, type, contactName, email, phone, comment
-					FROM supplier ORDER BY supplier ASC");
+				$result = $mysqli->query("SELECT idSupplier, supplier, type, status, contactName, email, phone, comment
+					FROM supplier WHERE status = 'active' ORDER BY type ASC");
 				
 				while($data = $result->fetch_object() ):
 			  ?>
                 <tr>
                   <td><a href=supplierDetails.php?supplierId=<?php echo $data->idSupplier ?>><?php echo $data->supplier ?></a></td>
-                  <td><?php echo $data->type ?></td>
                   <td><?php echo $data->contactName ?></td>
 				  <td><?php echo $data->email ?></td>
 				  <td><?php echo $data->phone ?></td>
+				  <td><?php echo $data->comment ?></td>
                 </tr>
 			  <?php
 				endwhile;
