@@ -4,7 +4,7 @@
     // products array
     $suppliers=array();
 
-    $result = $mysqli->query("SELECT idSupplier, supplier, type, contactName, email, phone, comment
+    $result = $mysqli->query("SELECT idSupplier, supplier, type, status, contactName, email, phone, comment
                     FROM supplier ORDER BY supplier ASC");
     
     while($data = $result->fetch_object()){
@@ -14,6 +14,7 @@
             "id" => $data->idSupplier,
             "supplier" => $data->supplier,
             "type" => $data->type,
+            "status" => $data->status,
             "contactName" => $data->contactName,
             "email" => $data->email,
             "phone" => $data->phone,
