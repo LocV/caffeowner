@@ -68,7 +68,8 @@
 				</select>
 				<select name="category" class="input-small"> <!--Supplement an id here instead of using 'text'-->
 					 <option value="baking" selected>baking</option> 
-					 <option value="baking" selected>cheese</option>
+					 <option value="bread" selected>bread</option>
+					 <option value="cheese" selected>cheese</option>
 					 <option value="produce" >produce</option>
 					 <option value="dairy">dairy</option>
 					 <option value="coffee">coffee</option>
